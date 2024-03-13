@@ -13,6 +13,8 @@ library(tidyverse)
 library(dplyr)
 library(lme4)
 
+#Don't forget to set your working directory!!!
+
 #read in relevant datasheets
 
 tb_months <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "1.MR_Growth")
