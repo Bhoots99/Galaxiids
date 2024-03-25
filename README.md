@@ -9,7 +9,7 @@ Files:
 
   3 - Growth and MO2 Rates.xlsx contains both SGR and MO2 data for this study. Formatted for use with the R Script (Script_03142024) to produce mass-standardized SGR values and generate figures 1 and 3 in the main text as          well as Supp. Fig. 2.
 
-  Script_03142024.R is the main R script used for data analysis and figure generation in this study. Requires loading in data from 3 - Growth and MO2 Rates.xlsx.
+  Script_03252024.R is the main R script used for data analysis and figure generation in this study. Requires loading in data from 3 - Growth and MO2 Rates.xlsx.
 
   Supplementary Materials.docx contains three supplementary figures relevant to this text.
 
