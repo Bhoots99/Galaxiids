@@ -251,9 +251,9 @@ top_row <- ggarrange(
   print(Fig3.5 + rremove("ylab") + rremove("xlab")), 
   print(Fig3.1 + rremove("ylab") + rremove("xlab")), 
   print(Fig3.3 + rremove("ylab") + rremove("xlab")), 
-  ncol = 3, labels = c("A", "B", "C"), 
+  ncol = 3, labels = c("A - MMR", "B - RMR", "C - SMR"), 
   widths = c(0.28, 0.31, 0.325), heights = c(0.2, 0.5, 0.5),
-  align = "v", label.y = 0.97, label.x = c(0.1, 0.17, 0.17),
+  align = "v", label.y = 0.96, label.x = c(0.01, 0.09, 0.09),
   common.legend = TRUE, legend = "top")
 
 # Arrange plots in the second row
@@ -261,9 +261,9 @@ bottom_row <- ggarrange(
   print(Fig3.6 + rremove("ylab") + rremove("xlab")), 
   print(Fig3.2 + rremove("ylab") + rremove("xlab")), 
   print(Fig3.4 + rremove("ylab") + rremove("xlab")), 
-  ncol = 3, labels = c("D", "E", "F"), 
+  ncol = 3, labels = c("D - MMR", "E - RMR", "F - SMR"), 
   widths = c(0.29, 0.29, 0.28), 
-  align = "v", label.y = 1.01, label.x = c(0.1, 0.1, 0.1), 
+  align = "v", label.y = 1.01, label.x = c(0.01, 0.01, 0.01), 
   common.legend = TRUE, legend = "none")
 
 # Combine both rows into a single ggarrange call
