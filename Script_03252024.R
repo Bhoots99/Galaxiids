@@ -1,6 +1,6 @@
 # Title: "Social and metabolic mediation of growth performance in a temperate estuarine fish"
 # Author: E. Hoots
-# Last updated: 25-March-2024
+# Last updated: 11-April-2024
 
 rm(list=ls())
 
@@ -17,16 +17,21 @@ library(lme4)
 
 #read in relevant datasheets
 
-tb_months <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "1.MR_Growth")
+tb_months <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "1.MR_Growth") %>%
+  mutate(
+    Category = ifelse(Category == "MED", "INT.", Category)
+  )
 
 tb_sgr <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "2.SGR_Long") %>%
   mutate(
-    Stage = as.factor(Stage)
+    Stage = as.factor(Stage),
+    Category = ifelse(Category == "MED", "INT.", Category)
   )
 
 tb_data <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "3.MR_Growth_Long") %>%
   mutate(
-    Stage = as.factor(Stage)
+    Stage = as.factor(Stage),
+    Category = ifelse(Category == "MED", "INT.", Category)
   )
 
 #mark fish 29 and 23 as outliers in the dataset (see Supplement: Outlier Analysis)
@@ -55,7 +60,7 @@ Fig1.1 <- ggplot(tb_sgr, aes(x = Mass, y = SGR)) +
   geom_smooth(aes(y = predict), method = "lm", formula = y ~ log(x), color = "darkgray", 
               linetype = "dashed", se = FALSE) +  # Plot model line
   #geom_ribbon(aes(ymin = ci_lower, ymax = ci_upper), fill = "gray", alpha = 0.4) +
-  labs(x = "Mass (g)", y = "SGR (% mass increase/day)") +
+  labs(x = "Mass (g)", y = SGR~("%"~mass~increase~day^-1)) +
   theme_classic() +
   scale_color_manual(values = c("limegreen", "orange", "red")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -79,13 +84,14 @@ Fig1.2 <- gg_SMRvsSGR_resid <- ggplot(data = tb_sgr) +
   geom_point(aes(y = resid, x = Mass, colour = Category, shape = Stage), size = 3) +
   theme_classic() +
   geom_hline(yintercept = 0, linetype = "dashed", color = "darkgray", size = 1) +
-  labs(x = "Mass (g)", y = "SGR model residuals (% mass increase/day)") +
+  labs(x = "Mass (g)", y = expression(SGR~model~residuals~("%"~mass~increase~day^-1))) +
   scale_color_manual(values = c("limegreen", "orange", "red")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         axis.text = element_text(size = 17, colour = "black"), 
         axis.title = element_text(size =20, colour = "black"), 
         legend.text = element_text(size=17, colour = "black"),
-        legend.title = element_text(size = 0, colour = "black"),
+        legend.title = element_text(size = 17, colour = "black"),
+        legend.position = "right",
         panel.border = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
@@ -96,6 +102,7 @@ Fig1.2 <- gg_SMRvsSGR_resid <- ggplot(data = tb_sgr) +
 
 
 Fig1.2
+
 
 tb_data <- left_join(tb_data, (tb_sgr[which(tb_sgr$Stage != 1),] %>% select(FishID, Stage, predict, resid)), by = c("FishID", "Stage"))
 
@@ -108,7 +115,8 @@ Fig3.1.1 <- ggplot() +
   geom_smooth(data = tb_data[which(tb_data$Stage == 2 & is.na(tb_data$Outlier)),],
               aes(x = RMR_mass, y = resid), color = "black",linetype = "dashed", method = "lm") +
   theme_classic() +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(),
+        axis.text = element_text(size = 12, colour = "black")) +
   ylim(-0.5, 0.5) +
   scale_color_manual(values = c("limegreen", "orange", "red", "gray"))+
   scale_y_continuous(breaks = seq(0.2, -0.4, by = -0.2), labels = function(x) round(x, 1)) +
@@ -146,6 +154,7 @@ Fig3.2 <- ggplot(data=tb_data[which(tb_data$Stage == 3),]) +
   geom_point(aes(x = RMR_mass, y = resid, color = as.factor(Category)), size = 2.5)+
   geom_smooth(aes(x = RMR_mass, y = resid), colour = "black", linetype = "dashed", method = "lm", size = 1) +
   theme_classic() +  
+  theme(axis.text = element_text(size = 12, colour = "black")) +
   scale_color_manual(values = c("limegreen", "orange", "red")) +
   stat_cor(aes(x = RMR_mass, y = resid), 
            method="pearson",                          
@@ -162,7 +171,8 @@ Fig3.3.1 <- ggplot() +
   geom_smooth(data = tb_data[which(tb_data$Stage == 2 & is.na(tb_data$Outlier)),],
               aes(x = SMR_mass, y = resid), color = "black",linetype = "dashed", method = "lm") +
   theme_classic() +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(), 
+        axis.text = element_text(size = 12, colour = "black")) +
   ylim(-0.5, 0.5) +
   scale_color_manual(values = c("limegreen", "orange", "red", "gray"))+
   scale_y_continuous(breaks = seq(0.2, -0.4, by = -0.2), labels = function(x) round(x, 1)) +
@@ -200,6 +210,7 @@ Fig3.4 <- ggplot(data=tb_data[which(tb_data$Stage == 3),]) +
   geom_point(aes(x = SMR_mass, y = resid, color = as.factor(Category)), size = 2.5)+
   geom_smooth(aes(x = SMR_mass, y = resid), colour = "black", linetype = "dashed", method = "lm", size = 1) +
   theme_classic() +  
+  theme(axis.text = element_text(size = 12, colour = "black")) +
   scale_color_manual(values = c("limegreen", "orange", "red")) +
   stat_cor(aes(x = SMR_mass, y = resid), 
            method="pearson",                          
@@ -216,7 +227,8 @@ Fig3.5 <- ggplot() +
   geom_smooth(data = tb_data[which(tb_data$Stage == 2 & is.na(tb_data$Outlier)),],
               aes(x = MMR_mass, y = resid), color = "black",linetype = "dashed", method = "lm") +
   theme_classic() +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(),
+        axis.text = element_text(size = 12, colour = "black")) +
   ylim(-0.5, 0.5) +
   scale_color_manual(values = c("limegreen", "orange", "red", "gray"))+
   scale_y_continuous(breaks = seq(0.2, -0.4, by = -0.2), labels = function(x) round(x, 1)) +
@@ -231,6 +243,7 @@ Fig3.6 <- ggplot(data=tb_data[which(tb_data$Stage == 3),]) +
   geom_point(aes(x = MMR_mass, y = resid, color = as.factor(Category)), size = 2.5)+
   geom_smooth(aes(x = MMR_mass, y = resid), colour = "black", linetype = "dashed", method = "lm", size = 1) +
   theme_classic() +  
+  theme(axis.text = element_text(size = 12, colour = "black")) +
   scale_color_manual(values = c("limegreen", "orange", "red")) +
   stat_cor(aes(x = MMR_mass, y = resid), 
            method="pearson",                          
@@ -253,7 +266,7 @@ top_row <- ggarrange(
   print(Fig3.3 + rremove("ylab") + rremove("xlab")), 
   ncol = 3, labels = c("A - MMR", "B - RMR", "C - SMR"), 
   widths = c(0.28, 0.31, 0.325), heights = c(0.2, 0.5, 0.5),
-  align = "v", label.y = 0.96, label.x = c(0.01, 0.09, 0.09),
+  align = "v", label.y = 0.96, label.x = c(0.03, 0.13, 0.132),
   common.legend = TRUE, legend = "top")
 
 # Arrange plots in the second row
@@ -263,7 +276,7 @@ bottom_row <- ggarrange(
   print(Fig3.4 + rremove("ylab") + rremove("xlab")), 
   ncol = 3, labels = c("D - MMR", "E - RMR", "F - SMR"), 
   widths = c(0.29, 0.29, 0.28), 
-  align = "v", label.y = 1.01, label.x = c(0.01, 0.01, 0.01), 
+  align = "v", label.y = 0.96, label.x = c(0.03, 0.04, 0.04), 
   common.legend = TRUE, legend = "none")
 
 # Combine both rows into a single ggarrange call
@@ -272,8 +285,8 @@ MR_SGR_months <- ggarrange(top_row, bottom_row, nrow = 2, common.legend = TRUE, 
 # Add annotations
 require(grid)
 Fig3 <- annotate_figure(MR_SGR_months, 
-                left = textGrob("SGR Residuals (% mass increase/day)", rot = 90, vjust = 1, gp = gpar(cex = 1.1)), 
-                bottom = textGrob("MR (mg/hr/6.06g)", gp = gpar(cex = 1.1)))
+                left = textGrob(expression(SGR~Residuals("%"~mass~increase~"*"~day^-1)), rot = 90, vjust =0.25, gp = gpar(cex = 1.1)), 
+                bottom = textGrob(expression(Metabolic~rate~(mg~O[2]~"*"~min^-1~"*"~6.06~g^-1)), gp = gpar(cex = 1.1)))
 
 Fig3
 
