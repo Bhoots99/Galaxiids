@@ -11,6 +11,6 @@ Files:
 
   Script_03252024.R is the main R script used for data analysis and figure generation in this study. Requires loading in data from 3 - Growth and MO2 Rates.xlsx.
 
-  Supplementary Materials.docx is out of date, refer to Supplementary Materials_Social and metabolic mediation of growth performance in a temperate estuarine fish.docx for the most recent version.
+  Supplementary Materials.docx contains supplementary figures and tables.
 
   Outlier-analysis.pdf shows annotated statistical analyses used to determine which data were outliers for modeling purposes.
