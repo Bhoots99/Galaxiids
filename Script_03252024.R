@@ -286,7 +286,7 @@ MR_SGR_months <- ggarrange(top_row, bottom_row, nrow = 2, common.legend = TRUE, 
 require(grid)
 Fig3 <- annotate_figure(MR_SGR_months, 
                 left = textGrob(expression(SGR~Residuals("%"~mass~increase~"*"~day^-1)), rot = 90, vjust =0.25, gp = gpar(cex = 1.1)), 
-                bottom = textGrob(expression(Metabolic~rate~(mg~O[2]~"*"~min^-1~"*"~6.06~g^-1)), gp = gpar(cex = 1.1)))
+                bottom = textGrob(expression(Metabolic~rate~(mg~O[2]~"*"~h^-1~"*"~6.06~g^-1)), gp = gpar(cex = 1.1)))
 
 Fig3
 
