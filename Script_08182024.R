@@ -14,7 +14,6 @@ library(dplyr)
 library(lme4)
 
 #Don't forget to set your working directory!!!
-setwd("C:/Users/s222141733/OneDrive - Deakin University/Beth Hoots/Growth Performance Pilot/Text")
 
 #read in relevant datasheets
 tb_months <- read_excel("3 - Growth and MO2 Rates.xlsx", sheet = "1.MR_Growth") %>%
@@ -591,7 +590,7 @@ ggarrange(
 
 library(readxl)
 
-tb_behav <- read_excel("C:/Users/s222141733/OneDrive - Deakin University/Beth Hoots/Growth Performance Pilot/Results/Raw Data/GoPro Video Datasheets/AllGoproSummary.xlsx", sheet = "Sheet2")
+tb_behav <- read_excel("4 - Behavior Data")
 
 tb_behav <- tb_behav %>%
   mutate(
